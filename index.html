@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
         <meta name="mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-web-app-capable" content="yes">
         <link rel="stylesheet" href="css/leaflet.css">
         <link rel="stylesheet" href="css/L.Control.Layers.Tree.css">
         <link rel="stylesheet" href="css/qgis2web.css">
@@ -20,30 +20,33 @@
             margin: 0;
         }
 
-        /* --- KOD TAMBAHAN UNTUK TAJUK --- */
+        /* --- STYLES UNTUK TAJUK --- */
         #map-title {
             position: absolute;
             top: 10px;
             left: 50%;
             transform: translateX(-50%);
-            z-index: 1000;
+            z-index: 1001; /* Pastikan lebih tinggi dari elemen peta */
             background-color: rgba(255, 255, 255, 0.9);
-            padding: 10px 20px;
-            border-radius: 5px;
+            padding: 10px 25px;
+            border-radius: 8px;
             border: 2px solid #2c3e50;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            font-family: Arial, sans-serif;
-            pointer-events: none; /* Supaya klik tembus ke peta di belakang */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            pointer-events: none; /* Supaya klik tembus ke peta */
+            text-align: center;
         }
         #map-title h1 {
             margin: 0;
-            font-size: 20px;
+            font-size: 22px;
             color: #2c3e50;
             text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: bold;
         }
-        /* ------------------------------- */
+        /* -------------------------- */
         </style>
-        <title></title>
+        <title>Peta Taman Perumahan</title>
     </head>
     <body>
         <div id="map-title">
@@ -52,6 +55,7 @@
 
         <div id="map">
         </div>
+        
         <script src="js/qgis2web_expressions.js"></script>
         <script src="js/leaflet.js"></script>
         <script src="js/L.Control.Layers.Tree.min.js"></script>
@@ -80,7 +84,7 @@
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
-        // remove popup's row if "visible-with-data"
+        
         function removeEmptyRowsFromPopupContent(content, feature) {
          var tempDiv = document.createElement('div');
          tempDiv.innerHTML = content;
@@ -94,7 +98,7 @@
          }
          return tempDiv.innerHTML;
         }
-        // modify popup if contains media
+
         function addClassToPopupIfMedia(content, popup) {
             var tempDiv = document.createElement('div');
             tempDiv.innerHTML = content;
@@ -126,7 +130,6 @@
                     video.style.maxWidth = "60vw";
                     imgTd.parentNode.replaceChild(video, imgTd);
                     popup._contentNode.classList.add('media');
-                    // Aggiorna il popup quando il video carica i metadati
                     video.addEventListener('loadedmetadata', function() {
                         popup.update();
                     });
